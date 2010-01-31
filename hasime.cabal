@@ -1,0 +1,17 @@
+name:                hasime
+version:             0.0
+synopsis:            Generate molecular dynamics simulation for Protomol
+description:         Generate molecular dynamics simulation for Protomol
+category:            System, Science
+license:             BSD3
+license-file:        LICENSE
+author:              Badi' Abdul-Wahid
+maintainer:          abdulwahidc@gmail.com
+build-depends:       base
+build-type:          Simple
+cabal-version:       >= 1.6.0
+
+Library
+  hs-source-dirs: src
+  build-depends: base, filepath, directory, hsh
+  ghc-options: -Wall
