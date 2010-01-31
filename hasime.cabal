@@ -12,6 +12,5 @@ build-type:          Simple
 cabal-version:       >= 1.6.0
 
 Library
-  hs-source-dirs: src
-  build-depends: base, filepath, directory, hsh
+  build-depends: base, filepath, directory
   ghc-options: -Wall
