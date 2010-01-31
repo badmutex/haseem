@@ -18,4 +18,4 @@ newtype DoConfig c =>
 
 
 runHaseem :: DoConfig c => Haseem c a -> IO (Maybe (a,c))
-runHaseem hasime = runCHP . runWriterT . runH $ hasime
+runHaseem haseem = runCHP . runWriterT . runH $ haseem
