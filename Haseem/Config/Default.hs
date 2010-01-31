@@ -2,11 +2,11 @@
   Rank2Types
   #-}
 
-module Hasime.Config.Default where
+module Haseem.Config.Default where
 
-import Hasime.Types
-import Hasime.Monad
-import Hasime.System.IO
+import Haseem.Types
+import Haseem.Monad
+import Haseem.System.IO
 
 
 import Control.Monad.Trans

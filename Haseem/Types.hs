@@ -1,4 +1,4 @@
-module Hasime.Types where
+module Haseem.Types where
 
 import Control.Monad.Writer
 import Control.Concurrent.CHP.Monad

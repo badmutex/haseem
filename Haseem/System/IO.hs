@@ -1,6 +1,6 @@
-module Hasime.System.IO where
+module Haseem.System.IO where
 
-import Hasime.Types
+import Haseem.Types
 
 import qualified  System.Directory as D
 import System.FilePath

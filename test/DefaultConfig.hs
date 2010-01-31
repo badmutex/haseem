@@ -1,7 +1,7 @@
 
-import Hasime.Types
-import Hasime.Monad
-import Hasime.Config.Default
+import Haseem.Types
+import Haseem.Monad
+import Haseem.Config.Default
 
 import Control.Monad.Trans
 import Control.Concurrent
