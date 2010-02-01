@@ -1,25 +1,24 @@
+{-# LANGUAGE
+  Rank2Types
+  #-}
+
 module Haseem.Types where
 
-import Control.Monad.Writer
-import Control.Concurrent.CHP.Monad
+import Control.Monad.Trans
 
-
-
-class DoConfig a where
-    doConfig :: a -> IO b
-
-type Name = String
+type Name          = String
 type ProjectNumber = Integer
-type Description = String
-type Run = Integer
-type Clone = Integer
+type Description   = String
+type Run           = Integer
+type Clone         = Integer
 
 newtype File = File FilePath deriving (Eq, Ord, Show)
 newtype Dir  = Dir  FilePath deriving (Eq, Ord, Show)
 
 
 data Replace = MkReplace {
-      regex :: String
+      regex       :: String
     , replacement :: String
     }
 
+type Logger = MonadIO m => String -> m ()
