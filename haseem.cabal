@@ -12,5 +12,5 @@ build-type:          Simple
 cabal-version:       >= 1.6.0
 
 Library
-  build-depends: base, filepath, directory
+  build-depends: base, filepath, directory, hsge >= 0.1
   ghc-options: -Wall
