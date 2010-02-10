@@ -46,8 +46,9 @@ withWorkArea wa h = local f h
 
 
 -- | Creates a workarea, runs the monad in the workarea, then cleans up
-wrapWorkArea :: Show a => Dir -> Haseem c a -> Haseem c a
-wrapWorkArea wa haseem = do
+wrapWorkArea :: Show a => Haseem c a -> Haseem c a
+wrapWorkArea haseem = do
+  wa <- getWorkArea
   liftIO $ createDirectoryIfMissing True (unDir wa)
   h <- haseem
   liftIO $ removeDirectoryRecursive (unDir wa)
