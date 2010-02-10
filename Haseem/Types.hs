@@ -12,8 +12,8 @@ type Description   = String
 type Run           = Integer
 type Clone         = Integer
 
-newtype File = File FilePath deriving (Eq, Ord, Show)
-newtype Dir  = Dir  FilePath deriving (Eq, Ord, Show)
+newtype File = File {unFile :: FilePath} deriving (Eq, Ord, Show)
+newtype Dir  = Dir  {unDir :: FilePath} deriving (Eq, Ord, Show)
 
 
 data Replace = MkReplace {
