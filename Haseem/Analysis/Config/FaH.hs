@@ -3,6 +3,8 @@ module Haseem.Analysis.Config.FaH where
 import Haseem.Types
 import Haseem.Monad
 
+import Data.Char
+import Data.List
 import System.FilePath
 import Text.Printf
 
@@ -15,6 +17,21 @@ data FaH = MkFaH {
     , gen         :: Gen
     } deriving Show
 
+
+times i f v = let vs = iterate f v
+              in vs !! i
+
+
+fromTarball :: File -> FaH
+fromTarball (File tb) =
+    let (gen:clone:run:_) = map (read . filter isDigit) . take 3 . reverse . map (times 2 takeBaseName) 
+                            $ splitDirectories tb
+    in MkFaH {
+             projectRoot = Dir . times 3 takeDirectory $ tb
+           , run = run
+           , clone = clone
+           , gen = gen
+           }
 
 relativeRunCloneGenTarball :: FaH -> FilePath
 relativeRunCloneGenTarball fah = printf "RUN%d" (run fah)              </>
