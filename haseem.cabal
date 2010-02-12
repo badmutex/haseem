@@ -12,5 +12,19 @@ build-type:          Simple
 cabal-version:       >= 1.6.0
 
 Library
-  build-depends: base, filepath, directory, hsge >= 0.1
+  build-depends: base,
+                 filepath,
+                 directory,
+                 process,
+                 mtl,
+                 MissingH,
+                 unix,
+                 hsge >= 0.1
+  exposed-modules:
+                    Haseem.Archive,
+                    Haseem.Monad,
+                    Haseem.Types,
+                    Haseem.Analysis.TarBz2,
+                    Haseem.Analysis.VMD.RMSD
+                    Haseem.Analysis.Config.FaH
   ghc-options: -Wall

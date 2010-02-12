@@ -3,8 +3,6 @@ module Haseem.Archive where
 
 import Haseem.Types
 
-import Control.Applicative    ((<$>))
-import Codec.Compression.BZip (decompress)
 import Text.Printf            (printf)
 
 import System.Process
