@@ -29,5 +29,5 @@ tarbz2 :: Haseem FaH a -> Haseem FaH a
 tarbz2 haseem = do
   cfg <- getConfig
   wa  <- getWorkArea
-  let tb = fahToTarballPath' cfg
+  let tb = unFile $ results cfg
   handle_tarball haseem wa tb

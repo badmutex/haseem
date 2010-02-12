@@ -17,6 +17,7 @@ data FaH = MkFaH {
     , run         :: Run
     , clone       :: Clone
     , gen         :: Gen
+    , results     :: File
     } deriving Show
 
 
@@ -44,6 +45,7 @@ fahFromTarball = do
              , run         = r
              , clone       = c
              , gen         = g
+             , results     = undefined -- set in caller
              }
 
 
@@ -51,7 +53,7 @@ fromTarball :: File -> FaH
 fromTarball (File tb) =
     case parse fahFromTarball [] tb of
       Left e -> error $ printf "Failed to parse '%s' into FaH" tb
-      Right fah -> fah
+      Right fah -> fah { results = File tb }
 
 
 relativeRunCloneGenTarball :: FaH -> FilePath
