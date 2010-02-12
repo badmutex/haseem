@@ -1,3 +1,4 @@
+module Main where
 
 import Haseem.Types
 import Haseem.Monad
@@ -6,38 +7,38 @@ import Haseem.Analysis.VMD.RMSD
 import Haseem.Analysis.TarBz2
 
 import System.FilePath
+import System.Environment
+import Data.List
+import Text.Printf
 
 
-proot = "/home/badi/Research/fah/test/data/PROJ10005"
-tarball = File $ proot </> relativeRunCloneGenTarball fah
-    where fah = MkFaH {
-                  projectRoot = Dir proot
-                , run         = 6
-                , clone       = 0
-                , gen         = 0
-                }
+main = do
+  [tarball] <- getArgs
+  let
+      rmsd' = rmsd genparams
+      genparams = genParams vmdcfg
 
+      vmdcfg = let root = "~/Research"
+               in VMDConfig {
+                        vmd_bin      = "vmd"
+                      , psfpath      = root </> "md/ww14/folded/ww_structure_14_model_charm.psf"
+                      , foldedpath   = root </> "md/ww14/folded/ww_structure_14_model_charm.pdb"
+                      , scriptname   = "rmsd.tcl"
+                      , resultsname  = "rmsd.txt"
+                      , dcdname      = "ww.dcd"
+                      , atomselect   = MkAtomSelect "all"
+                      , screenoutput = DevNull
+                      }
 
-hcfg = MkHaseemConfig {
-         logger   = undefined
-       , config   = fromTarball tarball
-       , workArea = Dir "/tmp/wa"
-       }
+      hcfg = MkHaseemConfig {
+               logger   = undefined
+             , config   = fromTarball $ File tarball
+             , workArea = Dir "/tmp/test/wa"
+               }
 
-vmdcfg = let root = "/home/badi/Research"
-         in VMDConfig {
-                  vmd_bin      = "vmd"
-                , psfpath      = root </> "md/ww14/folded/ww_structure_14_model_charm.psf"
-                , foldedpath   = root </> "md/ww14/folded/ww_structure_14_model_charm.pdb"
-                , scriptname   = "rmsd.tcl"
-                , resultsname  = "rmsd.txt"
-                , dcdname      = "ww.dcd"
-                , atomselect   = MkAtomSelect "all"
-                , screenoutput = DevNull
-                }
-
-genparams = genParams vmdcfg
-
-testrmsd = rmsd genparams
-
-test = runHaseem hcfg ((wrapWorkArea . myWorkArea . tarbz2) testrmsd)
+  (Right rmsds) <- runHaseem hcfg ((wrapWorkArea . myWorkArea . tarbz2) rmsd')
+  let frames = [0..]
+      results = zip frames rmsds
+      ssv :: (Integer,Double) -> String
+      ssv (f,r) = printf "%i %f" f r
+  mapM_ (putStrLn . ssv) results
