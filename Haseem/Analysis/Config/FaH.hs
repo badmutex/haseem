@@ -72,5 +72,5 @@ myWorkArea :: Haseem FaH a -> Haseem FaH a
 myWorkArea m = do
   wa  <- unDir `fmap` getWorkArea
   fah <- getConfig
-  let wa' = Dir $ wa </> takeDirectory (relativeRunCloneGenTarball fah)
+  let wa' = Dir $ wa </> printf "RUN%d" (run fah) </> printf "CLONE%d" (clone fah) </> printf "GEN%d" (gen fah)
   withWorkArea wa' m
