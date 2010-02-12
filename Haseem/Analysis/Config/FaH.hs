@@ -3,6 +3,8 @@ module Haseem.Analysis.Config.FaH where
 import Haseem.Types
 import Haseem.Monad
 
+import Text.ParserCombinators.Parsec
+
 import Data.Char
 import Data.List
 import System.FilePath
@@ -21,17 +23,36 @@ data FaH = MkFaH {
 times i f v = let vs = iterate f v
               in vs !! i
 
+digits :: (Num a, Read a) => Parser a
+digits = read `fmap` many digit
+
+skipTill :: String -> Parser String
+skipTill s = anyChar `manyTill` string s
+
+fahFromTarball :: Parser FaH
+fahFromTarball = do
+  path <- skipTill "PROJ"
+  pid  <- digits :: Parser Integer
+  skipTill "RUN"
+  r    <- digits
+  skipTill "CLONE"
+  c    <- digits
+  skipTill "results-"
+  g    <- digits
+  return $ MkFaH {
+               projectRoot = Dir $ printf "%sPROJ%d" path pid
+             , run         = r
+             , clone       = c
+             , gen         = g
+             }
+
 
 fromTarball :: File -> FaH
 fromTarball (File tb) =
-    let (gen:clone:run:_) = map (read . filter isDigit) . take 3 . reverse . map (times 2 takeBaseName) 
-                            $ splitDirectories tb
-    in MkFaH {
-             projectRoot = Dir . times 3 takeDirectory $ tb
-           , run = run
-           , clone = clone
-           , gen = gen
-           }
+    case parse fahFromTarball [] tb of
+      Left e -> error $ printf "Failed to parse '%s' into FaH" tb
+      Right fah -> fah
+
 
 relativeRunCloneGenTarball :: FaH -> FilePath
 relativeRunCloneGenTarball fah = printf "RUN%d" (run fah)              </>
