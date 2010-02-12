@@ -32,11 +32,11 @@ vmdcfg = let root = "/home/badi/Research"
                 , resultsname  = "rmsd.txt"
                 , dcdname      = "ww.dcd"
                 , atomselect   = MkAtomSelect "all"
-                , screenoutput = Default
+                , screenoutput = DevNull
                 }
 
 genparams = genParams vmdcfg
 
 testrmsd = rmsd genparams
 
-test = runHaseem hcfg ((wrapWorkArea . tarbz2) testrmsd)
+test = runHaseem hcfg ((wrapWorkArea . myWorkArea . tarbz2) testrmsd)

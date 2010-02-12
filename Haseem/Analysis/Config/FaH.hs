@@ -16,15 +16,21 @@ data FaH = MkFaH {
     } deriving Show
 
 
+relativeRunCloneGenTarball :: FaH -> FilePath
+relativeRunCloneGenTarball fah = printf "RUN%d" (run fah)              </>
+                                 printf "CLONE%d" (clone fah)          </>
+                                 printf "results-%03d.tar.bz2" (gen fah)
 
 fahToTarballPath' :: FaH -> FilePath
 fahToTarballPath' fah = printf "%s" (unDir $ projectRoot fah) </>
-                        printf "RUN%d" (run fah)              </>
-                        printf "CLONE%d" (clone fah)          </>
-                        printf "results-%03d.tar.bz2" (gen fah)
+                        relativeRunCloneGenTarball fah
 
 fahToTarballPath :: FaH -> File
 fahToTarballPath fah = File $ fahToTarballPath' fah
 
-myWorkArea :: Dir -> FaH -> Dir
-myWorkArea wa fah = Dir $ (unDir wa) </> takeDirectory (fahToTarballPath' fah)
+myWorkArea :: Haseem FaH a -> Haseem FaH a
+myWorkArea m = do
+  wa  <- unDir `fmap` getWorkArea
+  fah <- getConfig
+  let wa' = Dir $ wa </> takeDirectory (relativeRunCloneGenTarball fah)
+  withWorkArea wa' m
