@@ -9,17 +9,18 @@ import System.FilePath
 
 
 proot = "/home/badi/Research/fah/test/data/PROJ10005"
-fah = MkFaH {
-        projectRoot = Dir proot
-      , run         = 6
-      , clone       = 0
-      , gen         = 0
-      }
+tarball = File $ proot </> relativeRunCloneGenTarball fah
+    where fah = MkFaH {
+                  projectRoot = Dir proot
+                , run         = 6
+                , clone       = 0
+                , gen         = 0
+                }
 
 
 hcfg = MkHaseemConfig {
          logger   = undefined
-       , config   = fah
+       , config   = fromTarball tarball
        , workArea = Dir "/tmp/wa"
        }
 
