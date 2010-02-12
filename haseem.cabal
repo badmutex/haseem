@@ -19,6 +19,7 @@ Library
                  mtl,
                  MissingH,
                  unix,
+                 parsec,
                  hsge >= 0.1
   exposed-modules:
                     Haseem.Archive,
