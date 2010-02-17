@@ -7,6 +7,7 @@ import Haseem.Analysis.Config.FaH
 import Haseem.Analysis.VMD.RMSD
 import Haseem.Analysis.TarBz2
 
+import System.Directory
 import System.FilePath
 import System.Environment
 import Data.List
@@ -14,7 +15,7 @@ import Text.Printf
 
 
 main = do
-  [tarball] <- getArgs
+  tarball <- getArgs >>= canonicalizePath . head
   let
       rmsd'     = rmsd genparams
       genparams = genParams vmdcfg
@@ -36,7 +37,7 @@ main = do
       hcfg = MkHaseemConfig {
                logger   = undefined
              , config   = fromTarball $ File tarball
-             , workArea = Dir "/tmp/test/wa"
+             , workArea = Dir "/tmp/rmsd/wa"
                }
 
   rmsds <- runHaseem hcfg ((wrapWorkArea . myWorkArea . tarbz2) rmsd')
